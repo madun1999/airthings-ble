@@ -27,6 +27,7 @@ from .const import (
     ATOM_HUMIDITY,
     ATOM_LUX,
     ATOM_NOISE,
+    ATOM_OLDEST_VALUE_AGE,
     ATOM_PRESSURE,
     ATOM_RADON_1DAY_AVG,
     ATOM_RADON_MONTH_AVG,
@@ -35,6 +36,7 @@ from .const import (
     ATOM_TEMPERATURE,
     ATOM_VOC,
     BATTERY,
+    BATTERY_VOLTAGE,
     BQ_TO_PCI_MULTIPLIER,
     CHAR_UUID_DATETIME,
     CHAR_UUID_DEVICE_NAME,
@@ -62,6 +64,7 @@ from .const import (
     ILLUMINANCE,
     LUX,
     NOISE,
+    OLDEST_VALUE_AGE,
     PRESSURE,
     RADON_1DAY_AVG,
     RADON_1DAY_LEVEL,
@@ -446,6 +449,7 @@ class AirthingsBluetoothDeviceData:
                 new_values[BATTERY] = device.model.battery_percentage(
                     float(bat_data) / 1000.0
                 )
+                new_values[BATTERY_VOLTAGE] = float(bat_data) / 1000.0
 
             if (lux := sensor_data.get(ATOM_LUX)) is not None:
                 new_values[LUX] = lux
@@ -468,6 +472,8 @@ class AirthingsBluetoothDeviceData:
 
             if (pressure := sensor_data.get(ATOM_PRESSURE)) is not None:
                 new_values[PRESSURE] = float(pressure) / (64 * 100)
+            if (oldest_value_age := sensor_data.get(ATOM_OLDEST_VALUE_AGE)) is not None:
+                new_values[OLDEST_VALUE_AGE] = float(oldest_value_age)
 
             if (radon_1day_avg := sensor_data.get(ATOM_RADON_1DAY_AVG)) is not None:
                 new_values[RADON_1DAY_AVG] = (

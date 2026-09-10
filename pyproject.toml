@@ -1,7 +1,7 @@
 [project]
-name = "airthings-ble"
-version = "1.2.0"
-description = "Manage Airthings BLE devices"
+name = "airthings-ble-corentium"
+version = "0.1.0"
+description = "Airthings BLE support with Corentium Home 2 diagnostics and history decoding"
 authors = [
     { name = "Vincent Giorgi" },
     { name = "Ståle Storø Hauknes" },
@@ -18,9 +18,12 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://www.airthings.com"
-"Source" = "https://github.com/Airthings/airthings-ble"
-"Bug Reports" = "https://github.com/Airthings/airthings-ble/issues"
+"Homepage" = "https://github.com/madun1999/airthings-ble"
+"Source" = "https://github.com/madun1999/airthings-ble"
+"Bug Reports" = "https://github.com/madun1999/airthings-ble/issues"
+
+[tool.poetry]
+packages = [{ include = "airthings_ble" }]
 
 [tool.poetry.dependencies]
 bleak = { version = ">=1.0.1", python = "<3.14" }

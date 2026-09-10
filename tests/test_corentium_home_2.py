@@ -31,6 +31,8 @@ def test_corentium_home_2_sensor_data(
             "R7D": 100.0,
             "R30D": 200.0,
             "R1Y": 300,
+            "BAT": 2710,
+            "TIM": 3600,
         },
     )
 
@@ -38,3 +40,5 @@ def test_corentium_home_2_sensor_data(
     assert sensors["radon_week_avg"] == expected_radon_values[1]
     assert sensors["radon_month_avg"] == expected_radon_values[2]
     assert sensors["radon_year_avg"] == expected_radon_values[3]
+    assert sensors["battery_voltage"] == 2.71
+    assert sensors["oldest_value_age"] == 3600.0

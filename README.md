@@ -1,7 +1,8 @@
-# airthings-ble
+# airthings-ble-corentium
 
-Library to control Airthings devices through BLE, primarily meant to be used in
-the [Home Assistant integration](https://www.home-assistant.io/integrations/airthings_ble/).
+Fork of [Airthings/airthings-ble](https://github.com/Airthings/airthings-ble)
+that adds Corentium Home 2 diagnostics and Raven history payload decoding while
+preserving the `airthings_ble` Python import namespace.
 
 ## Supported devices
 
@@ -42,8 +43,8 @@ Run tests:
 poetry run pytest
 ```
 
-See [this wiki page](https://github.com/Airthings/airthings-ble/wiki/Testing-with-Home-Assistant) for more details
-on how to test the library with HA.
+See the [upstream wiki](https://github.com/Airthings/airthings-ble/wiki/Testing-with-Home-Assistant)
+for details on testing the library with Home Assistant.
 
 ## License
 
