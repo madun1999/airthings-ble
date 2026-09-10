@@ -1,85 +1,57 @@
-name: Publish to PyPI and GitHub
+name: Publish release
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: New version tag
-        required: true
-      prerelease:
-        description: Is this a pre-release?
-        required: false
-        default: false
-        type: boolean
+  push:
+    tags:
+      - "v*"
 
 jobs:
-  final-linting:
+  test:
     uses: ./.github/workflows/ci.yml
-  build-publish:
-    name: Build and publish to PyPI
+
+  publish:
+    name: Build and publish
     runs-on: ubuntu-latest
-    needs: final-linting
+    needs: test
     environment:
       name: release
-      url: https://pypi.org/p/airthings-ble
+      url: https://pypi.org/p/airthings-ble-corentium
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
       contents: write
     steps:
       - name: Checkout source
         uses: actions/checkout@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.14'
+          python-version: "3.13"
 
-      - name: Update pyproject.toml Version
+      - name: Verify tag matches package version
         run: |
-          pip install tomlkit
-          python -c "
-          import tomlkit
-          tag = '${{ github.event.inputs.tag }}'
-          with open('pyproject.toml', 'r') as file:
-            content = tomlkit.parse(file.read())
-          content['project']['version'] = tag
-          with open('pyproject.toml', 'w') as file:
-            file.write(tomlkit.dumps(content))
-          "
+          python - <<'PY'
+          import pathlib
+          import tomllib
+          import os
 
-      - name: Update __init__.py version
-        run: |
-          version="${{ github.event.inputs.tag }}"
-          file="airthings_ble/__init__.py"
-          sed -i "s/__version__\\s*=\\s*[\"'].*[\"']/__version__ = \"$version\"/" $file
+          version = tomllib.loads(pathlib.Path("pyproject.toml").read_text())["project"]["version"]
+          tag = os.environ["GITHUB_REF_NAME"]
+          if tag != f"v{version}":
+              raise SystemExit(f"tag {tag!r} does not match package version {version!r}")
+          PY
 
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "GitHub Actions"
-          git add pyproject.toml airthings_ble/__init__.py
-          git commit -m "Update version to ${{ github.event.inputs.tag }}"
-          git push
-          git tag ${{ github.event.inputs.tag }}
-          git push --tags
-
-      - name: Build source and wheel distributions
+      - name: Build and validate distributions
         run: |
           python -m pip install --upgrade build twine
           python -m build
-          twine check --strict dist/*
+          python -m twine check --strict dist/*
 
-      - name: Publish distribution to PyPI
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
-      - name: Release
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v3
         with:
-          files: dist/${{ env.name }}/*
-          tag_name: ${{ github.event.inputs.tag }}
+          files: dist/*
           generate_release_notes: true
-          prerelease: ${{ github.event.inputs.prerelease }}
-      
