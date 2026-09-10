@@ -31,6 +31,7 @@ from .const import (
     ATOM_PRESSURE,
     ATOM_RADON_1DAY_AVG,
     ATOM_RADON_MONTH_AVG,
+    ATOM_RADON_MONTH_AVG_ALTERNATE,
     ATOM_RADON_WEEK_AVG,
     ATOM_RADON_YEAR_AVG,
     ATOM_TEMPERATURE,
@@ -491,7 +492,11 @@ class AirthingsBluetoothDeviceData:
                 )
                 new_values[RADON_WEEK_LEVEL] = get_radon_level(float(radon_week_avg))
 
-            if (radon_month_avg := sensor_data.get(ATOM_RADON_MONTH_AVG)) is not None:
+            radon_month_avg = sensor_data.get(
+                ATOM_RADON_MONTH_AVG,
+                sensor_data.get(ATOM_RADON_MONTH_AVG_ALTERNATE),
+            )
+            if radon_month_avg is not None:
                 new_values[RADON_MONTH_AVG] = (
                     float(radon_month_avg)
                     if self.is_metric
