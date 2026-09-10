@@ -1,0 +1,28 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "This Corentium is already configured."
+    },
+    "step": {
+      "confirm": {
+        "description": "Add {name} to Home Assistant?",
+        "title": "Confirm Corentium Home 2"
+      },
+      "user": {
+        "data": {
+          "address": "Bluetooth address",
+          "name": "Name",
+          "scan_interval": "Polling interval (seconds)"
+        },
+        "description": "Enter the Bluetooth address shown by Home Assistant's Bluetooth integration.",
+        "title": "Add Corentium Home 2"
+      }
+    }
+  },
+  "issues": {
+    "official_integration_conflict": {
+      "description": "This Corentium is also configured in the official Airthings BLE integration. Remove it from one integration to prevent competing Bluetooth connections.",
+      "title": "Corentium configured twice"
+    }
+  }
+}

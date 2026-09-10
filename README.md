@@ -4,6 +4,11 @@ Fork of [Airthings/airthings-ble](https://github.com/Airthings/airthings-ble)
 that adds Corentium Home 2 diagnostics and Raven history payload decoding while
 preserving the `airthings_ble` Python import namespace.
 
+The [Home Assistant integration guide](INTEGRATION.md) covers HACS installation,
+operation, diagnostics, and a suggested radon dashboard. Raven history decoding,
+capture safeguards, and unresolved protocol questions are documented in
+[RAVEN_HISTORY.md](RAVEN_HISTORY.md).
+
 ## Supported devices
 
 This library supports the following Airthings devices:

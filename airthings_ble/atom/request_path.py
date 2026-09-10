@@ -8,6 +8,7 @@ class AtomRequestPath(StrEnum):
 
     LATEST_VALUES = "29999/0/31012"
     CONNECTIVITY_MODE = "17/0/31100"
+    RAVEN_HISTORY = "30018/0/31001"
 
     def as_cbor(self) -> bytes:
         """Get URL as bytes"""
