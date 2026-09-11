@@ -26,7 +26,9 @@ def _update_conflict_repair(hass: HomeAssistant, entry: ConfigEntry) -> None:
     address = _normalized_address(entry.data[CONF_ADDRESS])
     issue_id = f"official_integration_conflict_{address.lower()}"
     conflict = any(
-        address
+        other.source != "ignore"
+        and other.disabled_by is None
+        and address
         in {
             _normalized_address(other.data.get(CONF_ADDRESS, "")),
             _normalized_address(other.unique_id or ""),
